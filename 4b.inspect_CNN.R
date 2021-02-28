@@ -7,7 +7,7 @@ library("tidyverse")
 source("lib_ml_utils.R")
 
 # output dir of the CNN training
-output_dir <- "/home/jiho/datasets/regent_ptB/full_train/"
+output_dir <- "/home/jiho/datasets/regent_ptB/mobilenet/"
 taxo_precision <- "detailed"
 
 
