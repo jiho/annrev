@@ -229,8 +229,7 @@ def Create(fc_layers_sizes, fc_layers_dropout,
     # Classification layer
     if classif_layer_dropout:
         model.add(layers.Dropout(classif_layer_dropout))
-    model.add(layers.Dense(classif_layer_size))
-    # TODO no softmax?
+    model.add(layers.Dense(classif_layer_size, activation='softmax'))
 
     if summary:
         model.summary()
