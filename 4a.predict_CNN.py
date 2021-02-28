@@ -160,12 +160,17 @@ history = cnn.Train(
 
 # TODO get epoch from train history
 
-# write training history
-pd.DataFrame(history.history).to_csv(
-    os.path.join(output_dir, 'train_history.csv'),
-    index_label='index'
-)
-# TODO do not over write this
+
+# extract training history in a readable format
+h_df = pd.DataFrame(history.history)
+h_df['epoch'] = history.epoch
+h_df = h_df.rename(columns={'loss': 'train_loss', 'accuracy' : 'train_accuracy'})
+# write or append to file
+history_file = os.path.join(output_dir, 'train_history.tsv')
+if os.path.exists(history_file) :
+    h_df.to_csv(history_file, sep='\t', mode='a', header=False, index=False)
+else :
+    h_df.to_csv(history_file, sep='\t', index=False)
 
 
 print('Evaluate model on whole dataset') # ----
