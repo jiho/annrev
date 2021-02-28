@@ -9,6 +9,7 @@ __pycache__*
 # general stuff
 *.pdf
 *.gdoc
+*.gddoc
 *.eml
 # data and results
 *.tsv.gz
