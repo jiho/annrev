@@ -41,8 +41,8 @@ class DataGenerator(utils.Sequence):
     Args:
         img_paths (list/ndarray, str): paths to images
         labels (list/ndarray, str): image labels (as text)
-        classes (list, str): all classes present in the data set
-            NB: `labels` may only contain a aubset of classes with some datasets
+        classes (list, str): all classes to consider for the classification
+            NB: `labels` may only contain a subset of classes with some datasets
                 Specifying `classes` ensure the result is consistent
         batch_size (int): number of images in a batch
         input_dims (tuple, int): dimensions of the input images for the network
@@ -53,7 +53,7 @@ class DataGenerator(utils.Sequence):
         preserve_size (bool) : when True, small images are not scaled up
     
     Returns:
-        a batch of `batch_size` images (4D ndarray) and one-hot encoded labels (2D ndarray)
+        A batch of `batch_size` images (4D ndarray) and one-hot encoded labels (2D ndarray)
 
     """
     def __init__(self, img_paths, labels, classes, batch_size=32, input_dims=(224, 224, 3),
@@ -68,7 +68,7 @@ class DataGenerator(utils.Sequence):
         self.shuffle       = shuffle
         self.augment       = augment
         self.preserve_size = preserve_size
-        # initialise the ont-hot encoder
+        # initialise the one-hot encoder
         mlb = MultiLabelBinarizer(classes=classes)
         self.class_encoder = mlb
         
@@ -84,7 +84,7 @@ class DataGenerator(utils.Sequence):
         'Update indexes after each epoch'
         # reinitialise indexes
         self.indexes = np.arange(len(self.img_paths))
-        # and, if chosee, shuffle them between epochs, to make sure the batches
+        # and, if chosen, shuffle them between epochs, to make sure the batches
         # are not always the same
         if self.shuffle:
             np.random.shuffle(self.indexes)
@@ -159,6 +159,8 @@ class DataGenerator(utils.Sequence):
                 )
                 h,w = img.shape[0:2]
             
+            # TODO review the following for speed, possibly
+            
             # create a square, empty output, of desired dimension, filled with padding value
             pad_value = self.padding_value(img)
             img_square = np.full(self.input_dims, pad_value)
@@ -173,7 +175,6 @@ class DataGenerator(utils.Sequence):
         
         # convert to array of images        
         batch_prepared_images = np.array([img for img in batch_prepared_images], dtype='float32')
-        # TODO review for speed, possibly
         
         # augment images
         if self.augment == True:
@@ -187,9 +188,11 @@ class DataGenerator(utils.Sequence):
         return batch_prepared_images,batch_encoded_labels
 
 
-def Create(fc_layers_sizes, fc_layers_dropout,
-           classif_layer_size, classif_layer_dropout,
-           train_fe=False, summary=True):
+def Create(
+    fc_layers_sizes, fc_layers_dropout,
+    classif_layer_size, classif_layer_dropout,
+    train_fe=False, summary=True
+):
 
     """
     Generates a CNN model. 
@@ -206,7 +209,7 @@ def Create(fc_layers_sizes, fc_layers_dropout,
         summary (bool): whether to show a model summary
     
     Returns:
-        model (tensorflow.python.keras.engine.sequential.Sequential): CNN model
+        model (tf.keras.Sequential): CNN model
         
     """
     
@@ -239,18 +242,22 @@ def Create(fc_layers_sizes, fc_layers_dropout,
     return model
 
 
-def Compile(model, initial_lr, steps_per_epoch, lr_method='constant',
-            decay_rate=None, loss='cce'):
+def Compile(
+    model, initial_lr, lr_method='constant',
+    decay_steps=1.0, decay_rate=0.5, loss='cce'
+):
     """
     Compiles a CNN model. 
     
     Args:
         model (tf.keras.Sequential): CNN model to compile
-        lr_method (str): method for learning rate. 'constant' for a constant learning rate, 'decay' for a decay
-        initial_lr (float): initial learning rate. If lr_method is 'constant', set learning rate to this value
         steps_per_epochs (int): number of training steps at each epoch. Usually number_of_epochs // batch_size
-        decay_rate (float): rate for learning rate decay
-        loss (str): method to compute loss.
+        initial_lr (float): initial learning rate. If `lr_method`='constant', this is the learning rate.
+        lr_method (str): method for learning rate.
+            'constant' for a constant learning rate
+            'decay' for a learning rate decaying with time
+        decay_rate (float): rate of learning rate decay
+        loss (str): loss function.
           'cce' for CategoricalCrossentropy
           (see https://www.tensorflow.org/api_docs/python/tf/keras/losses/CategoricalCrossentropy),
           'sfce' for SigmoidFocalCrossEntropy
@@ -258,11 +265,9 @@ def Compile(model, initial_lr, steps_per_epoch, lr_method='constant',
           usefull for unbalanced classes
     
     Returns:
-        model (tensorflow.python.keras.engine.sequential.Sequential): compiled CNN model
+        model (tf.keras.Sequential): compiled CNN model
         
     """
-    # TODO if lr_method='decay', decay_rate in mandatory
-
     # Define learning rate
     if lr_method == 'decay':
         lr = tf.keras.optimizers.schedules.InverseTimeDecay(
@@ -278,11 +283,16 @@ def Compile(model, initial_lr, steps_per_epoch, lr_method='constant',
     
     # Define loss
     if loss == 'cce':
-        # loss = losses.CategoricalCrossentropy(from_logits=True,reduction=losses.Reduction.SUM_OVER_BATCH_SIZE)
-        loss = losses.CategoricalCrossentropy(from_logits=True, reduction=losses.Reduction.AUTO)
-        # TODO consider using https://www.tensorflow.org/api_docs/python/tf/keras/losses/SparseCategoricalCrossentropy to avoid having to one-hot encode the labels
+        # loss = losses.CategoricalCrossentropy(from_logits=True,
+        #            reduction=losses.Reduction.SUM_OVER_BATCH_SIZE)
+        loss = losses.CategoricalCrossentropy(from_logits=True,
+                   reduction=losses.Reduction.AUTO)
+        # TODO consider using
+        # https://www.tensorflow.org/api_docs/python/tf/keras/losses/SparseCategoricalCrossentropy
+        # to avoid having to one-hot encode the labels
     elif loss == 'sfce':
-        loss = tfa.losses.SigmoidFocalCrossEntropy(from_logits=True,reduction=losses.Reduction.SUM_OVER_BATCH_SIZE)
+        loss = tfa.losses.SigmoidFocalCrossEntropy(from_logits=True,
+                   reduction=losses.Reduction.SUM_OVER_BATCH_SIZE)
     
     # Compile model
     model.compile(
@@ -294,8 +304,10 @@ def Compile(model, initial_lr, steps_per_epoch, lr_method='constant',
     return model
 
 
-def Train(model, train_batches, valid_batches,
-          epochs, class_weight=None, output_dir='.', workers=1):
+def Train(
+    model, train_batches, valid_batches,
+    epochs, class_weight=None, output_dir='.', workers=1
+):
     """
     Trains a CNN model. 
     
