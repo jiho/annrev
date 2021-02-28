@@ -11,7 +11,7 @@ print('Import libraries') ## ----
 import os
 # disable tensorflow messages
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
-os.environ['TFHUB_CACHE_DIR'] = '/home/jiho/.tfhub_modules/'
+os.environ['TFHUB_CACHE_DIR'] = os.path.expanduser('~/.tfhub_modules/')
 import math
 
 # import ipdb    # debugging, use ipdb.set_trace() in the code
@@ -29,7 +29,7 @@ import tf_cnn as cnn
 print('Set options') ## ----
 
 # Data
-img_dir = '/home/jiho/datasets/regent_ptB/cropped/'
+img_dir = os.path.expanduser('~/datasets/regent_ptB/cropped/')
 batch_size = 64       # size of CNN batches
 augment = True        # whether to use data augmentation (during training)
 use_class_weight = True # whether to use weights inversely proportional to class freq
@@ -54,7 +54,7 @@ loss = 'cce'          # loss function: 'cce' for categorical cross entropy
 epochs = 50           # number of epochs to train for
 
 # Saving of weights and training history
-output_dir = '/home/jiho/datasets/regent_ptB/mobilenet/'
+output_dir = os.path.expanduser('~/datasets/regent_ptB/mobilenet/')
 # create the directory if it does not exist 
 os.makedirs(output_dir, exist_ok=True)
 
