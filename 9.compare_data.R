@@ -66,15 +66,17 @@ filter(dc, taxon %in% focus_taxa) %>%
     source=factor(source, levels=c("true", "RF", "CNN"))
   ) %>%
   ggplot(aes(x=date, y=conc, colour=source, linetype=source)) +
-  # geom_point(size=0.2) +
-  geom_smooth(se=F, span=0.02, n=500, size=0.5, alpha=0.75) +
+  # geom_path(size=0.2) +
+  stat_smooth(geom="line", se=F, span=0.01, n=800, size=0.3, alpha=0.9, lineend="round") +
   facet_grid(taxon~., scales="free_y", switch="y") +
-  scale_y_continuous(trans="log1p") +
+  scale_y_continuous(trans="sqrt") +
+  theme_light() +
   theme(legend.position="top") +
-  scale_colour_manual(values=c("black", "#eb5539", "#308dc7")) +
-  scale_linetype_manual(values=c("11", "solid", "solid")) +
+  scale_colour_manual(values=c("black", "#eb5539", "#006FCA")) +
+  scale_linetype_manual(values=c("21", "solid", "solid")) +
   labs(x="Date", y="Concentration [#/m3]", colour="Source", linetype="Source")
-ggsave("results/selected_ts.png", width=8, height=6, dpi=100)
+ggsave("results/selected_ts.png", width=8, height=7, dpi=100)
+ggsave("results/selected_ts.pdf", width=8, height=7)
 
 filter(dc, taxon %in% focus_taxa) %>%
   select(-lineage) %>%
