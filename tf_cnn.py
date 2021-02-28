@@ -56,7 +56,7 @@ class DataGenerator(utils.Sequence):
         A batch of `batch_size` images (4D ndarray) and one-hot encoded labels (2D ndarray)
 
     """
-    def __init__(self, img_paths, labels, classes, batch_size=32, input_dims=(224, 224, 3),
+    def __init__(self, img_paths, labels, classes, batch_size=32, input_dims=(380, 380, 3),
                  shuffle=False, augment=False, preserve_size=False):
         'Initialization of settings'
         # initialize constants
@@ -216,12 +216,9 @@ def Create(
     # Initiate empty model
     model = tf.keras.Sequential()
     
-    # MobileNet V2 feature extractor
-    # fe_url = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4"
-    fe_url = "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/feature_vector/4"
-    fe_layer = hub.KerasLayer(fe_url, input_shape=(224, 224, 3))
-    # set feature extractor trainability
-    fe_layer.trainable = train_fe
+    # EfficientNet B4 feature extractor
+    fe_url = "https://tfhub.dev/tensorflow/efficientnet/b4/feature-vector/1"
+    fe_layer = hub.KerasLayer(fe_url, input_shape=(380, 380, 3), trainable=train_fe)
     model.add(fe_layer)
     
     # Fully connected layers

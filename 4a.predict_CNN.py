@@ -27,7 +27,7 @@ print('Set options') ## ----
 
 # Data
 img_dir = os.path.expanduser('~/datasets/regent_ptB/cropped/')
-batch_size = 128      # size of CNN batches
+batch_size = 38      # size of CNN batches
 augment = True        # whether to use data augmentation (during training)
 use_class_weight = True # whether to use weights inversely proportional to class freq
 workers = 10          # number of parallel threads for data generators
@@ -42,14 +42,14 @@ classif_layer_dropout = 0.2   # drop-out rate before classification layer
 # Training
 lr_method = 'constant'# learning rate evolution: 'decay' for a decaying learning rate
                       #                          'constant' for a constant learning rate
-initial_lr = 0.00075  # initial learning rate
+initial_lr = 0.002    # initial learning rate
 decay_rate = 0.97     # rate of learning rate decay
 loss = 'cce'          # loss function: 'cce' for categorical cross entropy
                       #                'sfce' for sigmoid focal cross entropy
-epochs = 15           # number of epochs to train for
+epochs = 10           # number of epochs to train for
 
 # Saving of weights and training history
-output_dir = os.path.expanduser('~/datasets/regent_ptB/mobilenet/')
+output_dir = os.path.expanduser('~/datasets/regent_ptB/efficientnet/')
 # create the directory if it does not exist 
 os.makedirs(output_dir, exist_ok=True)
 
