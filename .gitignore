@@ -1,4 +1,13 @@
+# R stuff
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+# python stuff
+.ipynb*
+__pycache__*
+# general stuff
+*.pdf
+*.gdoc
+*.tsv.gz
+results/*
