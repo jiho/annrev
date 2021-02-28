@@ -251,11 +251,11 @@ def Compile(
     
     Args:
         model (tf.keras.Sequential): CNN model to compile
-        steps_per_epochs (int): number of training steps at each epoch. Usually number_of_epochs // batch_size
         initial_lr (float): initial learning rate. If `lr_method`='constant', this is the learning rate.
         lr_method (str): method for learning rate.
             'constant' for a constant learning rate
             'decay' for a learning rate decaying with time
+        decay_steps (int): ??
         decay_rate (float): rate of learning rate decay
         loss (str): loss function.
           'cce' for CategoricalCrossentropy
@@ -271,7 +271,10 @@ def Compile(
     # Define learning rate
     if lr_method == 'decay':
         lr = tf.keras.optimizers.schedules.InverseTimeDecay(
-            initial_lr, steps_per_epoch, decay_rate)
+            initial_learning_rate=initial_lr,
+            decay_steps=decay_steps_per_epoch,
+            decay_rate=decay_rate
+        )
         # NB: decayed learning rate computed as 
         #   initial_learning_rate / (1 + decay_rate * step / decay_step)
         # TODO how should decay_step be chosen??
