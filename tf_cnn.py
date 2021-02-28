@@ -8,8 +8,10 @@
 import os
 # disable tensorflow messages
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
-# import ipdb    # debugging, use ipdb.set_trace() in the code
+# store models downloaded form TFHub in the user's home
+os.environ['TFHUB_CACHE_DIR'] = os.path.expanduser('~/.tfhub_modules/')
 
+# import ipdb    # debugging, use ipdb.set_trace() in the code
 import numpy as np
 
 # image manipulation

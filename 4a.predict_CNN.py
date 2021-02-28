@@ -9,9 +9,6 @@ print('Import libraries') ## ----
 
 # general libraries
 import os
-# disable tensorflow messages
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
-os.environ['TFHUB_CACHE_DIR'] = os.path.expanduser('~/.tfhub_modules/')
 import math
 
 # import ipdb    # debugging, use ipdb.set_trace() in the code
