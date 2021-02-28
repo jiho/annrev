@@ -38,11 +38,9 @@ workers = 10          # number of parallel threads for data generators
 # Model setup
 train_fe = True       # whether to train the feature extractor
                       # if False, only fully connected layer(s) and classification layer will be trained.
-fc_layers_nb = 2      # number of fully connected layers
-                      # (between the feature extractor and the classification layer)
-fc_layers_size = 1024       # size of fully connected layers
-fc_layers_dropout = 0.4     # drop-out rate for fully connected layers
-classif_layer_dropout = 0.2 # drop-out rate for classification layer
+fc_layers_sizes = [1792, 896] # size(s) of fully connected layer(s)
+fc_layers_dropout = 0.4       # drop-out rate before fully connected layers
+classif_layer_dropout = 0.2   # drop-out rate before classification layer
 
 # Training
 lr_method = 'constant'# learning rate evolution: 'decay' for a decaying learning rate
@@ -119,8 +117,7 @@ print('Prepare model') # ----
 # define CNN
 my_cnn = cnn.Create(
     # add fully connected layer(s)
-    fc_layers_nb=fc_layers_nb,
-    fc_layers_size=fc_layers_size, 
+    fc_layers_sizes=fc_layers_sizes, 
     fc_layers_dropout=fc_layers_dropout, 
     # add a classification layer
     classif_layer_size=nb_taxa, 

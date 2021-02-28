@@ -185,7 +185,7 @@ class DataGenerator(utils.Sequence):
         return batch_prepared_images,batch_encoded_labels
 
 
-def Create(fc_layers_nb, fc_layers_size, fc_layers_dropout,
+def Create(fc_layers_sizes, fc_layers_dropout,
            classif_layer_size, classif_layer_dropout,
            train_fe=False, summary=True):
 
@@ -220,12 +220,11 @@ def Create(fc_layers_nb, fc_layers_size, fc_layers_dropout,
     model.add(fe_layer)
     
     # Fully connected layers
-    if fc_layers_nb:
-        for i in range(fc_layers_nb):
-            if fc_layers_dropout:
-                model.add(layers.Dropout(fc_layers_dropout))
-            model.add(layers.Dense(fc_layers_size, activation='relu'))
-    # TODO is it normal to have dropout *before* the first dense layer?
+    for i in range(len(fc_layers_sizes)):
+        if fc_layers_dropout:
+            model.add(layers.Dropout(fc_layers_dropout))
+        # TODO is it normal to have dropout *before* the first dense layer?
+        model.add(layers.Dense(fc_layers_sizes[i], activation='relu'))
     
     # Classification layer
     if classif_layer_dropout:
