@@ -46,7 +46,7 @@ initial_lr = 0.001    # initial learning rate
 decay_rate = 0.97     # rate of learning rate decay
 loss = 'cce'          # loss function: 'cce' for categorical cross entropy
                       #                'sfce' for sigmoid focal cross entropy
-epochs = 50           # number of epochs to train for
+epochs = 15           # number of epochs to train for
 
 # Saving of weights and training history
 output_dir = os.path.expanduser('~/datasets/regent_ptB/mobilenet/')
