@@ -344,6 +344,7 @@ def Train(model, train_batches, valid_batches,
         initial_epoch=initial_epoch,
         validation_data=valid_batches,
         class_weight=class_weight,
+        max_queue_size=min(10, workers*2),
         workers=workers
     )
         
@@ -381,6 +382,7 @@ def Predict(model, batches, classes=None, output_dir='.', workers=1):
     # Predict all batches
     prediction = model.predict(
         batches,
+        max_queue_size=min(10, workers*2),
         workers=workers
     )
     # NB: pred is an array with:
