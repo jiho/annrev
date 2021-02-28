@@ -145,7 +145,6 @@ history = cnn.Train(
     model=my_cnn,
     train_batches=train_batches,
     valid_batches=val_batches,
-    batch_size=batch_size,
     epochs=epochs,
     class_weight=class_weight,
     output_dir=output_dir,
@@ -172,7 +171,6 @@ print('Evaluate model on whole dataset') # ----
 pred = cnn.Predict(
     model=my_cnn,
     batches=total_batches,
-    batch_size=batch_size,
     classes=taxa,
     output_dir=output_dir,
     workers=workers

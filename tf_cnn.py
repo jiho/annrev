@@ -295,7 +295,7 @@ def Compile(model, initial_lr, steps_per_epoch, lr_method='constant',
 
 
 def Train(model, train_batches, valid_batches,
-          batch_size, epochs, class_weight=None, output_dir='.', workers=1):
+          epochs, class_weight=None, output_dir='.', workers=1):
     """
     Trains a CNN model. 
     
@@ -339,7 +339,6 @@ def Train(model, train_batches, valid_batches,
     # Fit the model
     history = model.fit(
         x=train_batches,
-        batch_size=batch_size,
         epochs=epochs,
         callbacks=[checkpoint_callback],
         initial_epoch=initial_epoch,
@@ -351,7 +350,7 @@ def Train(model, train_batches, valid_batches,
     return history
 
 
-def Predict(model, batches, batch_size=None, classes=None, output_dir='.', workers=1):
+def Predict(model, batches, classes=None, output_dir='.', workers=1):
     """
     Predict batches from a CNN model
     
@@ -380,7 +379,10 @@ def Predict(model, batches, batch_size=None, classes=None, output_dir='.', worke
         model.load_weights(latest)
 
     # Predict all batches
-    prediction = model.predict(batches, batch_size=batch_size, workers=workers)
+    prediction = model.predict(
+        batches,
+        workers=workers
+    )
     # NB: pred is an array with:
     # - as many lines as there are items in the batches to predict
     # - as many columns as there are classes
