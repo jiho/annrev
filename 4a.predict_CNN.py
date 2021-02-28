@@ -63,7 +63,7 @@ print('Prepare datasets') ## ----
 
 # read input data
 df = pd.read_csv('data/regent_data.tsv.gz', sep='\t', usecols=['objid', 'taxon_detailed', 'set'])
-# df = pd.read_csv('data/miniregent_data.tsv', sep='\t', usecols=['objid', 'taxon_detailed', 'set'])
+# df = pd.read_csv('data/miniregent_data.tsv.gz', sep='\t', usecols=['objid', 'taxon_detailed', 'set'])
 
 # pick which taxonomic level to use
 df = df.rename(columns={'taxon_detailed': 'taxon'})
