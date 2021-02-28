@@ -9,5 +9,9 @@ __pycache__*
 # general stuff
 *.pdf
 *.gdoc
+*.eml
+# data and results
 *.tsv.gz
 results/*
+orig_taxo_mapping.tsv
+
