@@ -14,15 +14,10 @@ taxo_precision <- "detailed"
 ## Training history ----
 
 # read the history log
-h <- read_csv(file.path(output_dir, "train_history.csv"))
-# add epoch manually
-h$epoch <- 1:length(h$loss)
-# TODO remove that, should be done in python
+h <- read_tsv(file.path(output_dir, "train_history.tsv"))
 
-h <- h %>%
-  # identify training vs validation data
-  rename(train_loss=loss, train_accuracy=accuracy) %>%
-  pivot_longer(cols=train_loss:val_accuracy, names_to="var", values_to="val") %>%
+hl <- h %>%
+  pivot_longer(cols=train_loss:val_accuracy, names_to="var", values_to="value") %>%
   separate(var, into=c("dataset", "metric"))
 
 h %>%
