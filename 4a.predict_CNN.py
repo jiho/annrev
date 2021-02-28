@@ -128,14 +128,13 @@ my_cnn = cnn.Create(
 # compile CNN
 my_cnn = cnn.Compile(
     my_cnn, 
-    initial_lr, 
-    steps_per_epoch=len(train_batches)//epochs,
-    # TODO review this
+    initial_lr=initial_lr, 
     lr_method=lr_method, 
+    decay_steps=len(train_batches)//epochs,
+    # TODO review this
     decay_rate=decay_rate, 
     loss=loss
 )
-# TODO review this part
 
 
 print('Train model') # ----
@@ -151,12 +150,10 @@ history = cnn.Train(
     workers=workers
 )
 
-# TODO get epoch from train history
-
-
 # extract training history in a readable format
 h_df = pd.DataFrame(history.history)
 h_df['epoch'] = history.epoch
+h_df['epoch'] = h_df['epoch'] + 1
 h_df = h_df.rename(columns={'loss': 'train_loss', 'accuracy' : 'train_accuracy'})
 # write or append to file
 history_file = os.path.join(output_dir, 'train_history.tsv')
