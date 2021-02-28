@@ -27,11 +27,12 @@ from tensorflow.keras import utils, layers, optimizers, losses, callbacks
 import tensorflow_hub as hub
 import tensorflow_addons as tfa
 
-# set a memory limit on tensorflow, to allow others to use the GPU too
-# it may be slightly less efficient memory-wise
-gpus = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_virtual_device_configuration(gpus[0],
-    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=20480)])
+# # set a memory limit on tensorflow, to allow others to use the GPU too
+# # it may be slightly less efficient memory-wise
+# gpus = tf.config.experimental.list_physical_devices('GPU')
+# tf.config.experimental.set_memory_growth(gpus[0], True)
+# tf.config.experimental.set_virtual_device_configuration(gpus[0],
+#     [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=30000)])
 
 
 class DataGenerator(utils.Sequence):
