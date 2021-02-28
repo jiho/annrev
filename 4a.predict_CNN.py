@@ -117,12 +117,16 @@ print('Prepare model') # ----
 
 # define CNN
 my_cnn = cnn.Create(
+    # add fully connected layer(s)
     fc_layers_nb=fc_layers_nb,
     fc_layers_size=fc_layers_size, 
     fc_layers_dropout=fc_layers_dropout, 
+    # add a classification layer
     classif_layer_size=nb_taxa, 
     classif_layer_dropout=classif_layer_dropout, 
-    train_fe=train_fe, 
+    # fine-tune the feature extractor
+    train_fe=train_fe,
+    # show summary after model creation
     summary=True
 )
 
@@ -136,6 +140,7 @@ my_cnn = cnn.Compile(
     decay_rate=decay_rate, 
     loss=loss
 )
+# TODO review this part
 
 
 print('Train model') # ----
@@ -162,7 +167,7 @@ pd.DataFrame(history.history).to_csv(
 # TODO do not over write this
 
 
-print('Evaluate model') # ----
+print('Evaluate model on whole dataset') # ----
 
 pred = cnn.Predict(
     model=my_cnn,
@@ -172,7 +177,7 @@ pred = cnn.Predict(
     workers=workers
 )
 
-# write predicted data to disk
+# write predicted data together with input table
 df['cnn_taxon'] = pred
 df.drop('img_path', axis=1).to_csv('results/CNN-detailed-predictions.tsv.gz', sep='\t', index=False)
 
