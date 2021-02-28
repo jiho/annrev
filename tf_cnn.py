@@ -31,7 +31,7 @@ import tensorflow_addons as tfa
 # it may be slightly less efficient memory-wise
 gpus = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_virtual_device_configuration(gpus[0],
-    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=10240)])
+    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=20480)])
 
 
 class DataGenerator(utils.Sequence):

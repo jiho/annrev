@@ -27,7 +27,7 @@ print('Set options') ## ----
 
 # Data
 img_dir = os.path.expanduser('~/datasets/regent_ptB/cropped/')
-batch_size = 64       # size of CNN batches
+batch_size = 128      # size of CNN batches
 augment = True        # whether to use data augmentation (during training)
 use_class_weight = True # whether to use weights inversely proportional to class freq
 workers = 10          # number of parallel threads for data generators
