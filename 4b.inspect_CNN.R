@@ -20,15 +20,15 @@ hl <- h %>%
   pivot_longer(cols=train_loss:val_accuracy, names_to="var", values_to="value") %>%
   separate(var, into=c("dataset", "metric"))
 
-h %>%
-  ggplot() +
-    geom_path(aes(x=epoch, y=val, colour=dataset)) +
-    facet_wrap(~metric, scales="free_y")
+ggplot(hl) +
+  geom_path(aes(x=epoch, y=value, colour=dataset)) +
+  scale_x_continuous(breaks=seq(1,max(hl$epoch),2)) +
+  facet_wrap(~metric, scales="free_y")
 
 
 ## Prediction quality ----
 
-d <- read_tsv(str_c("results/CNN-", taxo_precision, "-predictions.tsv.gz"))
+d <- read_tsv(str_c("results/CNN-", taxo_precision, "-predictions.tsv.gz"), col_types=cols())
 
 # split into sets
 sets <- split(d, d$set)
