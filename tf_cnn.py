@@ -27,11 +27,11 @@ from tensorflow.keras import utils, layers, optimizers, losses, callbacks
 import tensorflow_hub as hub
 import tensorflow_addons as tfa
 
-# # explicitly allow memory to grow
-# # this is necessary to run from the command line apparently...
-# physical_devices = tf.config.experimental.list_physical_devices('GPU')
-# assert len(physical_devices) > 0, "Not enough GPU hardware devices available"
-# config = tf.config.experimental.set_memory_growth(physical_devices[0], True)
+# set a memory limit on tensorflow, to allow others to use the GPU too
+# it may be slightly less efficient memory-wise
+gpus = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_virtual_device_configuration(gpus[0],
+    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=10240)])
 
 
 class DataGenerator(utils.Sequence):
