@@ -173,6 +173,7 @@ print('Evaluate model on whole dataset') # ----
 pred = cnn.Predict(
     model=my_cnn,
     batches=total_batches,
+    batch_size=batch_size,
     classes=taxa,
     output_dir=output_dir,
     workers=workers
