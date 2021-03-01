@@ -130,8 +130,7 @@ my_cnn = cnn.Compile(
     my_cnn, 
     initial_lr=initial_lr, 
     lr_method=lr_method, 
-    decay_steps=len(train_batches)//epochs,
-    # TODO review this
+    decay_steps=len(train_batches),
     decay_rate=decay_rate, 
     loss=loss
 )

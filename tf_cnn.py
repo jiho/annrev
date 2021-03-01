@@ -255,8 +255,11 @@ def Compile(
         lr_method (str): method for learning rate.
             'constant' for a constant learning rate
             'decay' for a learning rate decaying with time
-        decay_steps (int): ??
-        decay_rate (float): rate of learning rate decay
+        decay_steps (int): number of optimiser steps (i.e. data batches) used to compute the decay of
+            the learning rate.
+        decay_rate (float): rate of learning rate decay. The actual decay is computed as:
+                initial_lr / (1 + decay_rate * step / decay_steps)
+            where step is one optimiser step (i.e. one data batch).
         loss (str): loss function.
           'cce' for CategoricalCrossentropy
           (see https://www.tensorflow.org/api_docs/python/tf/keras/losses/CategoricalCrossentropy),
@@ -272,12 +275,9 @@ def Compile(
     if lr_method == 'decay':
         lr = tf.keras.optimizers.schedules.InverseTimeDecay(
             initial_learning_rate=initial_lr,
-            decay_steps=decay_steps_per_epoch,
+            decay_steps=decay_steps,
             decay_rate=decay_rate
         )
-        # NB: decayed learning rate computed as 
-        #   initial_learning_rate / (1 + decay_rate * step / decay_step)
-        # TODO how should decay_step be chosen??
     else: # Keep constant learning rate
         lr = initial_lr
     
