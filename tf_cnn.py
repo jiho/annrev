@@ -7,7 +7,7 @@
 # general libraries
 import os
 # disable tensorflow messages
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2' # does not work...
 # store models downloaded form TFHub in the user's home
 os.environ['TFHUB_CACHE_DIR'] = os.path.expanduser('~/.tfhub_modules/')
 
@@ -71,6 +71,13 @@ class DataGenerator(utils.Sequence):
         # initialise the one-hot encoder
         mlb = MultiLabelBinarizer(classes=classes)
         self.class_encoder = mlb
+        
+        # print('Nb of images : ' + str(len(self.img_paths)))
+        # print('Nb of labels : ' + str(len(self.labels)))
+        # print('batch_size : ' + str(self.batch_size))
+        # print('Input dimensions : ' + str(self.input_dims))
+        # print('Shuffle inputs : ' + str(self.shuffle))
+        # print('Augment inputs : ' + str(self.augment))
         
         self.on_epoch_end()
 
@@ -183,6 +190,9 @@ class DataGenerator(utils.Sequence):
         # extract the labels corresponding to the selected indexes
         batch_labels = [self.labels[i] for i in indexes]
         batch_encoded_labels = self.class_encoder.fit_transform([[l] for l in batch_labels])
+
+        # print('batch_prepared_images : ' + str(batch_prepared_images.shape))
+        # print('batch_encoded_labels : ' + str(batch_encoded_labels.shape))
         
         # return reshaped images and labels
         return batch_prepared_images,batch_encoded_labels
