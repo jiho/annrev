@@ -24,6 +24,7 @@ ggplot(hl) +
   geom_path(aes(x=epoch, y=value, colour=dataset)) +
   scale_x_continuous(breaks=seq(1,max(hl$epoch),2)) +
   facet_wrap(~metric, scales="free_y")
+ggsave(str_c("results/CNN-", taxo_precision, "-training_history.pdf"), width=8, height=4)
 
 
 ## Prediction quality ----
